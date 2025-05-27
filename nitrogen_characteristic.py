@@ -28,7 +28,7 @@ def calculate_data(data_path, axes, alfanum, temp):
 
     U = (1/conductivity) (l/(h zeta)) * I
 
-    but there are two different l - l1 = 1.2+-0.1 mm for U_12 and l2 = 1+-0.1 mm for U45
+    but there are two different l - l1 = 1.2+-0.1 mm for U_12 and l2 = 1.0+-0.1 mm for U45
 
     additionally
         h = 0.65+-0.05 mm
@@ -77,8 +77,12 @@ def calculate_data(data_path, axes, alfanum, temp):
     conductivity = 1 / fit
     sigmaconductivity = (1 / fit) ** 2 * sigmafit
 
-    to_print_cond = int(round(conductivity, -1))
-    to_print_sigmacond = int(round(sigmaconductivity, -1))
+    if alfanum == "(a)":
+        to_print_cond = int(round(conductivity))
+        to_print_sigmacond = int(round(sigmaconductivity))
+    else:
+        to_print_cond = int(round(conductivity, -1))
+        to_print_sigmacond = int(round(sigmaconductivity, -1))
 
     list_current = np.linspace(-35, 35, 50) * 10 ** (-3)
 
@@ -131,7 +135,7 @@ def calculate_data(data_path, axes, alfanum, temp):
     axes.text(
         0.05,
         0.6,
-        rf"$\sigma = {to_print_cond}\pm{to_print_sigmacond}\;\frac{{\textrm{{A}}^2\textrm{{s}}^3}}{{\textrm{{kg}}\,\textrm{{m}}^3}}$",
+        rf"$\sigma^\star = {to_print_cond}\pm{to_print_sigmacond}\;\frac{{\textrm{{A}}^2\textrm{{s}}^3}}{{\textrm{{kg}}\,\textrm{{m}}^3}}$",
         fontsize=fontsize,
         zorder=1,
         color="k",
@@ -163,7 +167,7 @@ def calculate_data(data_path, axes, alfanum, temp):
     return 0
 
 
-fontsize = 28
+fontsize = 25
 plt.rcParams.update(
     {
         "text.usetex": True,
