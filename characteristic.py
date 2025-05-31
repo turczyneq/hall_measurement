@@ -77,12 +77,8 @@ def calculate_data(data_path, axes, alfanum, temp):
     conductivity = 1 / fit
     sigmaconductivity = (1 / fit) ** 2 * sigmafit
 
-    if alfanum == "(a)":
-        to_print_cond = int(round(conductivity))
-        to_print_sigmacond = int(round(sigmaconductivity))
-    else:
-        to_print_cond = int(round(conductivity, -1))
-        to_print_sigmacond = int(round(sigmaconductivity, -1))
+    to_print_cond = int(round(conductivity, -1))
+    to_print_sigmacond = int(round(sigmaconductivity, -1))
 
     list_current = np.linspace(-35, 35, 50) * 10 ** (-3)
 
