@@ -175,16 +175,39 @@ Uhall_plot.plot(
 )
 
 Ualong_plot.legend(frameon=False, loc=[0.4, 0.1])
-Uhall_plot.legend(frameon=False, loc=[0., 0.55])
+Uhall_plot.legend(frameon=False, loc=[0.55, 0.05])
+
+Ualong_plot.text(
+    0.01,
+    0.93,
+    r"(a)",
+    fontsize=fontsize,
+    zorder=1,
+    color="k",
+    transform=Ualong_plot.transAxes,
+)
+
+Uhall_plot.text(
+    0.01,
+    0.93,
+    r"(b)",
+    fontsize=fontsize,
+    zorder=1,
+    color="k",
+    transform=Uhall_plot.transAxes,
+)
 
 Ualong_plot.set_xlim(0, 2)
-Ualong_plot.set_ylim(0, 11)
+Ualong_plot.set_ylim(0, 12)
 
 Uhall_plot.set_xlim(0, 2)
 Uhall_plot.set_ylim(-0.07, 0.4)
 
-plt.xlabel(r"magnetic field ($B$) [T]"),
-plt.ylabel(r"voltage ($U$) [mV]")
+Uhall_plot.set_xlabel(r"magnetic field ($B$) [T]"),
+Uhall_plot.set_ylabel(r"voltage ($U$) [mV]")
+
+Ualong_plot.set_xlabel(r"magnetic field ($B$) [T]"),
+Ualong_plot.set_ylabel(r"voltage ($U$) [mV]")
 
 # plt.hlines(0, -(10**3), 10**3, colors="0.7", linestyles="--", zorder=0)
 # plt.vlines(0, -(10**3), 10**3, colors="0.7", linestyles="--", zorder=0)
