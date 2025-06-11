@@ -26,11 +26,11 @@ zeta = 0.38 * 10 ** (-3)
 l1 = 1.2 * 10 ** (-3)
 I = 0.01
 
-alpha_nitrogen = 370.075
-beta_nitrogen = 58.02
-gamma_nitrogen = 3098.8
-delta_nitrogen = 1453.44
-sigma0_nitrogen = 6800
+alpha_nitrogen = 375.66
+beta_nitrogen = 47
+gamma_nitrogen = 2950.28
+delta_nitrogen = 1328
+sigma0_nitrogen = 6817
 
 
 def Ualong_nitrogen(B):
@@ -49,7 +49,7 @@ def Uhall_nitrogen(B):
     )
 
 
-alpha_room, beta_room, gamma_room, delta_room = -104.071, 444.091, -6965.96, 10411.8
+alpha_room, beta_room, gamma_room, delta_room = -98.4, 389.8, -5430, 6506.1
 sigma0_room = 4875.74
 
 
@@ -92,37 +92,40 @@ plt.rcParams.update(
 
 fig = plt.figure(
     figsize=(20, 6),
-    constrained_layout=True,
+    constrained_layout=False,
 )
 
 gs = fig.add_gridspec(
-    1,
     2,
-    wspace=0.02,
+    2,
+    wspace=0.13,
+    hspace=0.0,
     width_ratios=[1, 1],
 )
 
-Ualong_plot = fig.add_subplot(gs[0, 0])
-Uhall_plot = fig.add_subplot(gs[0, 1])
+Ualong_plot_nit = fig.add_subplot(gs[1, 0])
+Ualong_plot_temp = fig.add_subplot(gs[0, 0], sharex=Ualong_plot_nit)
+Uhall_plot = fig.add_subplot(gs[:, 1])
 
+plt.setp(Ualong_plot_temp.get_xticklabels(), visible=False)
 
-Ualong_plot.scatter(
+Ualong_plot_nit.scatter(
     Ualong_nitrogen_field,
     10 ** (3) * Ualong_nitrogen_voltage,
     c=tableau[0],
-    label=r"($N$) along the current",
+    label=r"($N$) longitudinal voltage",
     zorder=1,
 )
 
-Ualong_plot.scatter(
+Ualong_plot_temp.scatter(
     Ualong_room_field,
     10 ** (3) * Ualong_room_voltage,
     c=tableau[1],
-    label=r"$(RT)$ along the current",
+    label=r"$(RT)$ longitudinal voltage",
     zorder=1,
 )
 
-Ualong_plot.plot(
+Ualong_plot_nit.plot(
     B_list,
     10 ** (3) * Ualong_nitrogen_theory,
     color="#a0cbe8",
@@ -131,7 +134,7 @@ Ualong_plot.plot(
     zorder=0,
 )
 
-Ualong_plot.plot(
+Ualong_plot_temp.plot(
     B_list,
     10 ** (3) * Ualong_room_theory,
     color="#ffbe7d",
@@ -174,31 +177,59 @@ Uhall_plot.plot(
     zorder=0,
 )
 
-Ualong_plot.legend(frameon=False, loc=[0.4, 0.1])
-Uhall_plot.legend(frameon=False, loc=[0.55, 0.05])
+Ualong_plot_nit.legend(frameon=False, loc=[0.05, 0.5])
 
-Ualong_plot.text(
+Ualong_plot_temp.legend(frameon=False, loc=[0.32, -0.02])
+
+Uhall_plot.legend(frameon=False, loc=[0.49, 0.02])
+
+Ualong_plot_temp.text(
     0.01,
-    0.93,
+    0.85,
     r"(a)",
     fontsize=fontsize,
     zorder=1,
     color="k",
-    transform=Ualong_plot.transAxes,
+    transform=Ualong_plot_temp.transAxes,
+)
+
+Ualong_plot_temp.text(
+    -0.145,
+    -0.5,
+    r"voltage ($U$) [mV]",
+    fontsize=fontsize,
+    zorder=1,
+    rotation=90,
+    color="k",
+    transform=Ualong_plot_temp.transAxes,
+)
+
+
+Ualong_plot_nit.text(
+    0.01,
+    0.85,
+    r"(b)",
+    fontsize=fontsize,
+    zorder=1,
+    color="k",
+    transform=Ualong_plot_nit.transAxes,
 )
 
 Uhall_plot.text(
     0.01,
     0.93,
-    r"(b)",
+    r"(c)",
     fontsize=fontsize,
     zorder=1,
     color="k",
     transform=Uhall_plot.transAxes,
 )
 
-Ualong_plot.set_xlim(0, 2)
-Ualong_plot.set_ylim(0, 12)
+Ualong_plot_nit.set_xlim(0, 2)
+Ualong_plot_nit.set_ylim(7.1, 7.28)
+
+# Ualong_plot_nit.set_ylabel(r"voltage ($U$) [mV]")
+Ualong_plot_nit.set_xlabel(r"magnetic field ($B$) [T]"),
 
 Uhall_plot.set_xlim(0, 2)
 Uhall_plot.set_ylim(-0.07, 0.4)
@@ -206,8 +237,11 @@ Uhall_plot.set_ylim(-0.07, 0.4)
 Uhall_plot.set_xlabel(r"magnetic field ($B$) [T]"),
 Uhall_plot.set_ylabel(r"voltage ($U$) [mV]")
 
-Ualong_plot.set_xlabel(r"magnetic field ($B$) [T]"),
-Ualong_plot.set_ylabel(r"voltage ($U$) [mV]")
+
+Ualong_plot_temp.set_xlim(0, 2)
+Ualong_plot_temp.set_ylim(9.9, 10.7)
+
+# Ualong_plot_temp.set_ylabel(r"voltage ($U$) [mV]")
 
 # plt.hlines(0, -(10**3), 10**3, colors="0.7", linestyles="--", zorder=0)
 # plt.vlines(0, -(10**3), 10**3, colors="0.7", linestyles="--", zorder=0)
@@ -215,6 +249,9 @@ Ualong_plot.set_ylabel(r"voltage ($U$) [mV]")
 parent_dir = Path(__file__).parent
 tosave = parent_dir / "graphs/hall_measurement.pdf"
 
-plt.savefig(tosave, bbox_inches="tight")
-
-plt.show()
+plt.savefig(
+    tosave,
+    bbox_inches="tight",
+    pad_inches=0.1,
+)
+# plt.show()
